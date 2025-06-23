@@ -37,13 +37,13 @@ const ViewItems = () => {
   
     if (cachedItems) {
       setItems(JSON.parse(cachedItems));
-      setLoading(false); // ✅ avoid showing the loading spinner
+      setLoading(false); 
     } else {
-      fetch(`${import.meta.env.BACKEND_URL}/items`)
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/items`)
         .then(res => res.json())
         .then(data => {
           setItems(data);
-          localStorage.setItem('items-cache', JSON.stringify(data)); // ✅ cache it
+          localStorage.setItem('items-cache', JSON.stringify(data)); 
           setLoading(false);
         })
         .catch(() => {
@@ -66,7 +66,7 @@ const ViewItems = () => {
   const handleEnquire = async () => {
     if (!selectedItem) return;
     try {
-      await fetch(`${import.meta.env.BACKEND_URL}/enquire`, {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/enquire`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ itemId: selectedItem.id, itemName: selectedItem.name })

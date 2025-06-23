@@ -2,7 +2,8 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
-import { PrismaClient } from '../generated/prisma';
+// import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { config } from 'dotenv';
 import { writeFile } from 'fs/promises';
 import path from 'path';
@@ -26,6 +27,7 @@ app.post('/items', async (c) => {
   const description = form.get('description')?.toString();
   const coverImage = form.get('coverImage') as File | null;
   const additionalImages = form.getAll('additionalImages') as File[];
+    console.log(FormData);
 
   if (!name || !type || !description || !coverImage) {
     return c.json({ error: 'Missing required fields' }, 400);
@@ -58,12 +60,15 @@ app.get('/items', async (c) => {
 app.post('/enquire', async (c) => {
   const { itemId, itemName } = await c.req.json();
 
-  // Optionally send an email or store enquiry in DB
   console.log('Enquiry received for item:', itemId, itemName);
 
   return c.json({ message: 'Enquiry sent successfully' });
 });
-// Start server
-const PORT = Number(process.env.PORT) || 4000;
-serve({ fetch: app.fetch, port: PORT });
-console.log(`Server running at http://localhost:${PORT}`);
+
+
+// const PORT = Number(process.env.PORT) || 4000;
+// serve({ fetch: app.fetch, port: PORT });
+// console.log(`Server running at http://localhost:${PORT}`);
+export default {
+  fetch: app.fetch,
+};

@@ -12,12 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // src/index.ts
 const hono_1 = require("hono");
 const cors_1 = require("hono/cors");
-const node_server_1 = require("@hono/node-server");
-const prisma_1 = require("../generated/prisma");
+// import { PrismaClient } from '../generated/prisma';
+const client_1 = require("@prisma/client");
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 const app = new hono_1.Hono();
-const prisma = new prisma_1.PrismaClient();
+const prisma = new client_1.PrismaClient();
 app.use('*', (0, cors_1.cors)());
 // POST /items
 const saveFileTemp_1 = require("./utils/saveFileTemp");
@@ -29,6 +29,7 @@ app.post('/items', (c) => __awaiter(void 0, void 0, void 0, function* () {
     const description = (_c = form.get('description')) === null || _c === void 0 ? void 0 : _c.toString();
     const coverImage = form.get('coverImage');
     const additionalImages = form.getAll('additionalImages');
+    console.log(FormData);
     if (!name || !type || !description || !coverImage) {
         return c.json({ error: 'Missing required fields' }, 400);
     }
@@ -52,11 +53,12 @@ app.get('/items', (c) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 app.post('/enquire', (c) => __awaiter(void 0, void 0, void 0, function* () {
     const { itemId, itemName } = yield c.req.json();
-    // Optionally send an email or store enquiry in DB
     console.log('Enquiry received for item:', itemId, itemName);
     return c.json({ message: 'Enquiry sent successfully' });
 }));
-// Start server
-const PORT = Number(process.env.PORT) || 4000;
-(0, node_server_1.serve)({ fetch: app.fetch, port: PORT });
-console.log(`Server running at http://localhost:${PORT}`);
+// const PORT = Number(process.env.PORT) || 4000;
+// serve({ fetch: app.fetch, port: PORT });
+// console.log(`Server running at http://localhost:${PORT}`);
+exports.default = {
+    fetch: app.fetch,
+};
