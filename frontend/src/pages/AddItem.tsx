@@ -54,7 +54,7 @@ const AddItem = () => {
     formData.additionalImages.forEach(img => data.append('additionalImages', img));
 
     try {
-      const res = await fetch('http://localhost:4000/items', {
+      const res = await fetch(`${import.meta.env.BACKEND_URL}/items`, {
         method: 'POST',
         body: data
       });

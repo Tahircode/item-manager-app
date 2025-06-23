@@ -39,7 +39,7 @@ const ViewItems = () => {
       setItems(JSON.parse(cachedItems));
       setLoading(false); // ✅ avoid showing the loading spinner
     } else {
-      fetch('http://localhost:4000/items')
+      fetch(`${import.meta.env.BACKEND_URL}/items`)
         .then(res => res.json())
         .then(data => {
           setItems(data);
@@ -66,7 +66,7 @@ const ViewItems = () => {
   const handleEnquire = async () => {
     if (!selectedItem) return;
     try {
-      await fetch('http://localhost:4000/enquire', {
+      await fetch(`${import.meta.env.BACKEND_URL}/enquire`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ itemId: selectedItem.id, itemName: selectedItem.name })
