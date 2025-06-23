@@ -8,6 +8,7 @@ import { config } from 'dotenv';
 import { writeFile } from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
+import { createServer } from 'http';
 
 config();
 
@@ -69,6 +70,9 @@ app.post('/enquire', async (c) => {
 // const PORT = Number(process.env.PORT) || 4000;
 // serve({ fetch: app.fetch, port: PORT });
 // console.log(`Server running at http://localhost:${PORT}`);
-export default {
-  fetch: app.fetch,
-};
+// export default {
+//   fetch: app.fetch,
+// };
+
+const PORT = Number(process.env.PORT) || 4000;
+serve({ fetch: app.fetch, port: PORT });
